@@ -85,3 +85,33 @@ app.get('/api/usuarios/:id', (req, res) => {
         }
     });
 });
+
+app.post('/api/usuarios/agregar', (request, response) => {
+    const { nombre, email, clave } = request.body;
+    conexion.query("INSERT INTO usuario_(nombre, email, clave) VALUES (?,?,?)",
+        [nombre, email, clave],
+        (error, results) => {
+            if (error)
+                throw error;
+            response.status(201).json({ message:"Item añadido correctamente"});
+        });
+});
+ 
+app.delete('/api/usuarios/eliminar/:id', (req, res) => {
+    const { id } = req.params; // Obtenemos el id desde la URL
+    const query = `DELETE FROM usuario_ WHERE id_usuario = ?`; // Consulta para eliminar el usuario
+
+    // Ejecutamos la consulta SQL para eliminar el registro
+    conexion.query(query, [id], (error, results) => {
+        if (error) {
+            console.error(error.message);
+            return res.status(500).json({ message: "Hubo un error al intentar eliminar el usuario." });
+        }
+
+        else if (results.affectedRows > 0) {
+            res.json({ message: `Usuario con ID ${id} eliminado correctamente.` });
+        } else {
+            res.status(404).json({ message: `No se encontró un usuario con el ID ${id}.` });
+        }
+    });
+});
