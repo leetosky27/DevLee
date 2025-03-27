@@ -64,7 +64,7 @@ app.get('/productos', (request, response) => {
         (error, results) => {
             if (error)
                 throw error;
-            response.status(204).json(results);
+            response.status(200).json(results);
         });
 });
 
@@ -115,3 +115,24 @@ app.delete('/api/usuarios/eliminar/:id', (req, res) => {
         }
     });
 });
+
+app.put('/api/usuarios/actualizar/:id', (req, res) => {
+    const { id } = req.params;
+    const { nombre, email, clave } = req.body;
+
+    if (!nombre || !email || !clave) {
+        return res.status(400).json({ message: "Por favor, proporcione nombre, email y clave." });
+    }
+    const query = `UPDATE usuario_ SET nombre = ?, email = ?, clave = ? WHERE id_usuario = ?`;
+    conexion.query(query, [nombre, email, clave, id], (error, results) => {
+        if (error) {
+            console.error(error.message);
+        }
+        if (results.affectedRows > 0) {
+            res.json({ message: `Usuario con ID ${id} actualizado correctamente.` });
+        } else {
+            res.status(404).json({ message: `No se encontró un usuario con el ID ${id}.` });
+        }
+    });
+});
+
