@@ -4,13 +4,14 @@
   "description": "Mi primer backend",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js"
   },
   "author": "Lee",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "mysql2": "^3.14.0"
   },
