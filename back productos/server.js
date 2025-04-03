@@ -126,3 +126,30 @@ app.delete('/api/productos/eliminar/:id', (req, res) => {
         }
     });
 });
+
+app.put('/api/productos/actualizar/:id', (req, res) => {
+    const { id } = req.params;
+    const { nombre_producto, descripcion, precio, stock } = req.body; 
+
+    
+    if (!nombre_producto || !descripcion || !precio || !stock) {
+        return res.status(400).json({ message: "Por favor, proporcione nombre, descripción, precio y stock." });
+    }
+
+    const query = `UPDATE productos SET nombre_producto = ?, descripcion = ?, precio = ?, stock = ? WHERE id_producto = ?`;
+
+    conexion.query(query, [nombre_producto, descripcion, precio, stock, id], (error, results) => {
+        if (error) {
+            console.error(error.message);
+            return res.status(500).json({ message: "Error al actualizar el producto", error: error.message });
+        }
+
+        if (results.affectedRows > 0) {
+            return res.json({ message: `Producto con ID ${id} actualizado correctamente.` });
+        } else {
+
+            return res.status(404).json({ message: `No se encontró un producto con el ID ${id}.` });
+        }
+    });
+});
+
