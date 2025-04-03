@@ -85,3 +85,24 @@ app.get('/api/productos/:id', (req, res) => {
         }
     });
 });
+
+app.post('/api/productos/agregar', (request, response) => {
+    const { nombre_producto, descripcion, precio, stock } = request.body;
+
+    // Validar los datos recibidos
+    if (!nombre_producto || !precio || !stock) {
+        return response.status(400).json({ message: "Faltan datos requeridos" });
+    }
+
+    conexion.query("INSERT INTO `productos`(`nombre_producto`, `descripcion`, `precio`, `stock`) VALUES (?,?,?,?)",
+        [nombre_producto, descripcion, precio, stock],
+        (error, results) => {
+            if (error) {
+                console.log("Error SQL:", error.sqlMessage);
+                return response.status(500).json({ message: "Error al agregar el producto", error: error.sqlMessage });
+            }
+            console.log("Producto añadido con éxito:", results);
+            response.status(201).json({ message: "Producto añadido correctamente", id: results.insertId });
+        });
+});
+
