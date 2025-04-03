@@ -69,3 +69,19 @@ app.get('/productos', (request, response) => {
 });
 
 
+app.get('/api/productos/:id', (req, res) => {
+    const { id } = req.params
+    const query = `SELECT * FROM productos WHERE id_producto=${id}`
+    conexion.query(query, (error, resultado) => {
+        if (error) return console.error(error.message)
+
+        if (resultado.length > 0) {
+            console.log(resultado)
+            res.json(resultado)
+
+        } else {
+            res.json('No hay registros con ese ID')
+
+        }
+    });
+});
