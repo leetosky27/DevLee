@@ -1,0 +1,14 @@
+{
+  "name": "jest",
+  "version": "1.0.0",
+  "description": "Pruebas de software con JEST",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Martin  Lee",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^29.7.0"
+  }
+}
